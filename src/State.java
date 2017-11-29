@@ -92,10 +92,11 @@ public class State<T> {
      */
     @Override
     public String toString() {
-        return "State{" +
+        String s = "State{" +
                 "state=" + state +
                 ", cost=" + cost +
-                ", cameFrom=" + cameFrom +
-                '}';
+                ", cameFrom=";
+        if (cameFrom == null) s += "null"; else s += cameFrom.getState();
+        return s + '}';
     }
 }
