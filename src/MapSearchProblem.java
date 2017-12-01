@@ -49,8 +49,8 @@ public class MapSearchProblem extends Searchable<Point> {
             }
         }
 
-        this.start = new State<>(startPoint, 0.0, null);
-        this.goal = new State<>(goalPoint, -1, null);
+        this.start = new State<>(startPoint, 0.0, null, 0, -1);
+        this.goal = new State<>(goalPoint, -1, null, 0, -1);
     }
 
     private TILE charToTile(char c) {
@@ -72,7 +72,7 @@ public class MapSearchProblem extends Searchable<Point> {
     }
 
     @Override
-    public List<State<Point>> getChildStates(State<Point> state) {
+    public List<State<Point>> getChildStates(State<Point> state, int timeOfCreation) {
         if (state == null)
             return null;
         List<State<Point>> list = new LinkedList<>();
@@ -96,7 +96,8 @@ public class MapSearchProblem extends Searchable<Point> {
             if (tile == TILE.WATER || state.getState().equals(p)
                     || (state.getCameFrom() != null && state.getCameFrom().getState().equals(p)))
                 continue;
-            list.add(new State<>(p, state.getCost() + costsPerTile.get(tile), state));
+            list.add(new State<Point>(p, state.getCost() + costsPerTile.get(tile), state,
+                    state.getDepth() + 1, timeOfCreation));
         }
 
         return list;

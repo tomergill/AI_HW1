@@ -6,6 +6,8 @@ public class State<T> {
     private T state;
     private double cost; //g(n), n=this
     private State<T> cameFrom;
+    private int depth;
+    private int creationTime;
 
     /**
      * Constructor.
@@ -13,10 +15,28 @@ public class State<T> {
      * @param cost g(n) where n is this state.
      * @param father The State we came from, can be null.
      */
-    public State(T state, double cost, State<T> father) {
+    public State(T state, double cost, State<T> father, int depth, int creationTime) {
         this.state = state;
         this.cost = cost;
         this.cameFrom = father;
+        this.depth = depth;
+        this.creationTime = creationTime;
+    }
+
+    public State(T state, double cost, State<T> father, int creationTime) {
+        this(state, cost, father, father!= null ? father.depth + 1 : 0, creationTime);
+    }
+
+    public State(T state, double cost, int creationTime) {
+        this(state, cost, null, creationTime);
+    }
+
+    public State(T state, double cost, int depth, int creationTime) {
+        this(state, cost, null, depth, creationTime);
+    }
+
+    public int getCreationTime() {
+        return creationTime;
     }
 
     /**
@@ -53,14 +73,20 @@ public class State<T> {
      * @param father The new state we came from.
      * @return true if father is now this.cameFrom, false otherwise.
      */
-    public boolean newCameFrom(State<T> father)
+    public boolean newCameFrom(State<T> father, int creationTime)
     {
         if (equals(father) || father.getCost() >= cameFrom.cost)
             return false;
         this.cost += father.cost - cameFrom.cost;
         cameFrom = father;
+        this.depth = father.depth + 1;
+        this.creationTime = creationTime;
         return true;
 
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
     /**
@@ -92,11 +118,12 @@ public class State<T> {
      */
     @Override
     public String toString() {
-        String s = "State{" +
+        return "State{" +
                 "state=" + state +
                 ", cost=" + cost +
-                ", cameFrom=";
-        if (cameFrom == null) s += "null"; else s += cameFrom.getState();
-        return s + '}';
+                ", cameFrom=" + (cameFrom == null ? "null" : cameFrom) +
+                ", depth=" + depth +
+                ", creationTime=" + creationTime +
+                '}';
     }
 }

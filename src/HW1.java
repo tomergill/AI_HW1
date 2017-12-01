@@ -33,7 +33,7 @@ public class HW1 {
     private static List<State<Point>> printStateAndChildren(MapSearchProblem problem, State<Point>
             state) {
         System.out.println("States from state " + state + " are: ");
-        List<State<Point>> children = problem.getChildStates(state);
+        List<State<Point>> children = problem.getChildStates(state, 0);
         for (State<Point> s: children) {
             System.out.println("*\t" + s);
         }

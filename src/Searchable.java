@@ -17,5 +17,5 @@ public abstract class Searchable<T> {
         return goal;
     }
 
-    public abstract List<State<T>> getChildStates(State<T> state);
+    public abstract List<State<T>> getChildStates(State<T> state, int timeOfCreation);
 }
