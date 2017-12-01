@@ -85,6 +85,10 @@ public class State<T> {
 
     }
 
+    public void setCreationTime(int creationTime) {
+        this.creationTime = creationTime;
+    }
+
     public int getDepth() {
         return depth;
     }

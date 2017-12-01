@@ -4,7 +4,7 @@ import java.util.Stack;
 
 public abstract class Searcher<T> {
     protected PriorityQueue<State<T>> queue;
-    protected Stack<T> solution;
+    protected Stack<T> solution = null;
     protected double totalCost;
 
     public Searcher() {
@@ -24,4 +24,8 @@ public abstract class Searcher<T> {
     }
 
     protected abstract Comparator<State<T>> getComparator();
+
+    public boolean foundSolution() {
+        return solution != null && !solution.empty();
+    }
 }

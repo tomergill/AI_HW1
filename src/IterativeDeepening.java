@@ -5,11 +5,13 @@ public class IterativeDeepening extends Searcher<Point> {
 
     @Override
     public void search(Searchable<Point> problem) {
-        int limit_depth = -1;
+        if (problem == null)
+            return;
+        int limit_depth = 0;
         State<Point> finish;
         do {
             finish = DFSWithDepthLimit(problem, ++limit_depth);
-        } while (!finish.equals(problem.getGoal()));
+        } while (finish != null && !finish.equals(problem.getGoal()));
 
         solution = new Stack<>();
         totalCost = 0;
@@ -21,8 +23,42 @@ public class IterativeDeepening extends Searcher<Point> {
     }
 
     private State<Point> DFSWithDepthLimit(Searchable<Point> problem, int limit) {
+        /* Initialization */
         int time = 0;
-        return null; //todo this
+        queue.clear();
+        queue.add(problem.getStart());
+        Map<State<Point>, State<Point>> visited = new HashMap<>();
+        State<Point> current = null;
+        while (!queue.isEmpty()) {
+            current = queue.poll();
+            if (current.equals(problem.getGoal()))
+                return current;
+            if (current.getDepth() >= limit)
+                continue;
+            for (State<Point> s : problem.getChildStates(current, time)) {
+                if (!visited.containsKey(s)) { //first time visit
+                    s.setCreationTime(time++);
+                    visited.put(s, s);
+                    queue.add(s);
+                } else  if (queue.contains(s)) { //in stack waiting, updating it's cost and time
+                    for (State<Point> temp : queue) { //find it in queue
+                        if (temp.equals(s)) {
+                            if (temp.getCost() > s.getCost()) {
+                                queue.remove(temp);
+                                queue.add(s);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        if (current != null && current.getDepth() >= limit) //stopped because IDS' limit
+            return current;
+
+        return null; //there is no solution
     }
 
     @Override
@@ -31,14 +67,10 @@ public class IterativeDeepening extends Searcher<Point> {
             comparator = new Comparator<State<Point>>() {
                 @Override
                 public int compare(State<Point> o1, State<Point> o2) {
-                    if (o1.getCost() > o2.getCost())
-                        return 1;
-                    else if (o1.getCost() < o2.getCost())
+                    if (o1.getCreationTime() < o2.getCreationTime())
                         return -1;
-                    else if (o1.getCreationTime() < o2.getCreationTime())
-                        return 1;
                     else if (o1.getCreationTime() > o2.getCreationTime())
-                        return -1;
+                        return 1;
                     return 0;
                 }
             };

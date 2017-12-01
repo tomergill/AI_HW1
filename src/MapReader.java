@@ -19,6 +19,7 @@ public class MapReader {
         map = new ArrayList<>();
         for (int i = 0; i < rows; i++)
             map.add(reader.readLine().toCharArray());
+        reader.close();
     }
 
     public List<char[]> getMap() {
