@@ -1,19 +1,28 @@
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IterativeDeepening extends Searcher<Point> {
-    private int time;
     private Comparator<State<Point>> comparator = null;
-
-    public IterativeDeepening() {
-        time = 0;
-    }
 
     @Override
     public void search(Searchable<Point> problem) {
-        int depth = 0;
+        int limit_depth = -1;
+        State<Point> finish;
+        do {
+            finish = DFSWithDepthLimit(problem, ++limit_depth);
+        } while (!finish.equals(problem.getGoal()));
+
+        solution = new Stack<>();
+        totalCost = 0;
+        while (finish != null) {
+            solution.push(finish.getState());
+            totalCost += finish.getCost();
+            finish = finish.getCameFrom();
+        }
+    }
+
+    private State<Point> DFSWithDepthLimit(Searchable<Point> problem, int limit) {
+        int time = 0;
+        return null; //todo this
     }
 
     @Override
