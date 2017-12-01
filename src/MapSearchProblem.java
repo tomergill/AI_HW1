@@ -77,28 +77,28 @@ public class MapSearchProblem extends Searchable<Point> {
             return null;
         List<State<Point>> list = new LinkedList<>();
         int x = state.getState().getX(), y = state.getState().getY();
-        int[] diffs = {-1, 0, 1};
+        Point points[] = {
+                new Point(x, y+1),      // right
+                new Point(x+1, y+1),  // right-down
+                new Point(x+1, y),      // down
+                new Point(x+1, y-1), //left-down
+                new Point(x, y-1),     //left
+                new Point(x-1, y+1), //left-up
+                new Point(x-1, y),     //up
+                new Point(x-1, y+1)  // right-up
+        };
+        State<Point> new_state;
 
-        for (int i:diffs) {
-            for (int j: diffs){
-                if (i == 0 && j == 0)
-                    continue;
-                Point p = new Point(x+i, y+j);
-                if (!isPointInMap(p))
-                    continue;
-                TILE tile = charToTile(map.get(x + i)[y + j]);
-                if (tile == TILE.WATER)
-                    continue;
-                //Duplicate Pruning
-                else if (state.getCameFrom() != null && p.equals(state.getCameFrom().getState()))
-                    continue;
-                else if (p.equals(start.getState())) //never add start
-                    continue;
-
-                list.add(new State<>(p, state.getCost() + costsPerTile.get(tile),
-                        state));
-            }
+        for (Point p: points) {
+            if (!isPointInMap(p))
+                continue;
+            TILE tile = charToTile(map.get(p.getX())[p.getY()]);
+            if (tile == TILE.WATER || state.getState().equals(p)
+                    || (state.getCameFrom() != null && state.getCameFrom().getState().equals(p)))
+                continue;
+            list.add(new State<>(p, state.getCost() + costsPerTile.get(tile), state));
         }
+
         return list;
     }
 }

@@ -34,8 +34,8 @@ public class IterativeDeepening extends Searcher<Point> {
                     return 1;
                 else if (o1.getCost() < o2.getCost())
                     return -1;
-
+                return 0;
             }
-        }
+        };
     }
 }

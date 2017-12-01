@@ -4,13 +4,13 @@
  */
 public class State<T> {
     private T state;
-    private double cost; //f(n), n=this
+    private double cost; //g(n), n=this
     private State<T> cameFrom;
 
     /**
      * Constructor.
      * @param state The state this object represents.
-     * @param cost f(n) where n is this state.
+     * @param cost g(n) where n is this state.
      * @param father The State we came from, can be null.
      */
     public State(T state, double cost, State<T> father) {

@@ -3,6 +3,7 @@ import java.util.List;
 
 public class HW1 {
     public static void main(String[] args) {
+
         assert args.length == 1;
         try {
             System.out.println("File is " + args[0] + "\n");
