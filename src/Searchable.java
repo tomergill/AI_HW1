@@ -18,4 +18,6 @@ public abstract class Searchable<T> {
     }
 
     public abstract List<State<T>> getChildStates(State<T> state, int timeOfCreation);
+
+    public abstract double getEstimationForState(State<T> state);
 }

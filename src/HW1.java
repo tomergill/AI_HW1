@@ -18,8 +18,8 @@ public class HW1 {
                     algo = new IterativeDeepening();
                     break;
                 case "A*":
-                    //todo add A*
-                    //break;
+                    algo = new Astar();
+                    break;
                 default:
                     algo = new IterativeDeepening();
                     break;

@@ -3,9 +3,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 public class MapSearchProblem extends Searchable<Point> {
     private List<char[]> map;
-
+    private double[][] estimation;
     public enum TILE {
         START,
         END,
@@ -51,6 +54,17 @@ public class MapSearchProblem extends Searchable<Point> {
 
         this.start = new State<>(startPoint, 0.0, null, 0, -1);
         this.goal = new State<>(goalPoint, -1, null, 0, -1);
+
+        /* estimation */
+        estimation = new double[map.size()][ map.get(0).length];
+        for (int i = 0; i < estimation.length; i++) {
+            for (int j = 0; j < estimation[0].length; j++) {
+                /* Airspace */
+                double x2 = goal.getState().getX(), y2 = goal.getState().getY();
+                estimation[i][j] = sqrt(((double) i - x2) * ((double) i - x2)
+                        + ((double) j - y2) * ((double) j - y2));
+            }
+        }
     }
 
     private TILE charToTile(char c) {
@@ -104,5 +118,12 @@ public class MapSearchProblem extends Searchable<Point> {
         }
 
         return list;
+    }
+
+    @Override
+    public double getEstimationForState(State<Point> state) {
+        if (!isPointInMap(state.getState()))
+            return -1;
+        return estimation[state.getState().getX()][state.getState().getY()];
     }
 }
