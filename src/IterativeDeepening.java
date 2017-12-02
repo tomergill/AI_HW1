@@ -16,7 +16,7 @@ public class IterativeDeepening extends Searcher<Point> {
         } while (finish != null && !finish.equals(problem.getGoal())
                 && limit_depth < limitIterations);
 
-        if (finish!= null)
+        if (finish != null)
             totalCost = finish.getCost();
         solution = new Stack<>();
         if (limit_depth < limitIterations) { //not finished because of limit, but because found
@@ -42,8 +42,8 @@ public class IterativeDeepening extends Searcher<Point> {
             List<State<Point>> children = problem.getChildStates(current, time);
             Collections.reverse(children);
             for (State<Point> s : children) {
-                    s.setCreationTime(time++);
-                    queue.add(s);
+                s.setCreationTime(time++);
+                queue.add(s);
             }
         }
 

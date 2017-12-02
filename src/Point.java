@@ -10,6 +10,7 @@ public class Point {
 
     /**
      * Constructor.
+     *
      * @param x x-value of point.
      * @param y y-value of point.
      */
@@ -20,6 +21,7 @@ public class Point {
 
     /**
      * Gets x.
+     *
      * @return the x value of the point.
      */
     public int getX() {
@@ -28,6 +30,7 @@ public class Point {
 
     /**
      * Gets y.
+     *
      * @return the y value of the point.
      */
     public int getY() {
@@ -36,6 +39,7 @@ public class Point {
 
     /**
      * Checks whether the object are equal or not, by x and y values.
+     *
      * @param o Oject to check if equal to this.
      * @return true if equals, false otherwise.
      */

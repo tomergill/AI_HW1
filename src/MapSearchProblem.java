@@ -9,6 +9,7 @@ import static java.lang.Math.sqrt;
 public class MapSearchProblem extends Searchable<Point> {
     private List<char[]> map;
     private double[][] estimation;
+
     public enum TILE {
         START,
         END,
@@ -19,6 +20,7 @@ public class MapSearchProblem extends Searchable<Point> {
     }
 
     private static final Map<TILE, Double> costsPerTile;
+
     static {
         costsPerTile = new EnumMap<TILE, Double>(TILE.class);
         costsPerTile.put(TILE.START, 0.0);
@@ -37,7 +39,7 @@ public class MapSearchProblem extends Searchable<Point> {
         Point goalPoint = null;
         int rows = map.size(), cols = map.get(0).length;
         if (map.get(0)[0] == 'S' && map.get(rows - 1)[cols - 1] == 'G') {
-            startPoint = new Point(0,0);
+            startPoint = new Point(0, 0);
             goalPoint = new Point(rows - 1, cols - 1);
         } else {
             for (int i = 0; i < map.size() && (startPoint == null || goalPoint == null); i++) {
@@ -56,7 +58,7 @@ public class MapSearchProblem extends Searchable<Point> {
         this.goal = new State<>(goalPoint, -1, null, 0, -1);
 
         /* estimation */
-        estimation = new double[map.size()][ map.get(0).length];
+        estimation = new double[map.size()][map.get(0).length];
         for (int i = 0; i < estimation.length; i++) {
             for (int j = 0; j < estimation[0].length; j++) {
                 /* Airspace */
@@ -69,13 +71,20 @@ public class MapSearchProblem extends Searchable<Point> {
 
     private TILE charToTile(char c) {
         switch (c) {
-            case 'S': return TILE.START;
-            case 'G': return TILE.END;
-            case 'H': return TILE.HILL;
-            case 'R': return TILE.ROAD;
-            case 'W': return TILE.WATER;
-            case 'D': return TILE.DIRT;
-            default: return null;
+            case 'S':
+                return TILE.START;
+            case 'G':
+                return TILE.END;
+            case 'H':
+                return TILE.HILL;
+            case 'R':
+                return TILE.ROAD;
+            case 'W':
+                return TILE.WATER;
+            case 'D':
+                return TILE.DIRT;
+            default:
+                return null;
         }
     }
 
@@ -92,18 +101,18 @@ public class MapSearchProblem extends Searchable<Point> {
         List<State<Point>> list = new LinkedList<>();
         int x = state.getState().getX(), y = state.getState().getY();
         Point points[] = {
-                new Point(x, y+1),      // right
-                new Point(x+1, y+1),  // right-down
-                new Point(x+1, y),      // down
-                new Point(x+1, y-1), //left-down
-                new Point(x, y-1),     //left
-                new Point(x-1, y-1), //left-up
-                new Point(x-1, y),     //up
-                new Point(x-1, y+1)  // right-up
+                new Point(x, y + 1),      // right
+                new Point(x + 1, y + 1),  // right-down
+                new Point(x + 1, y),      // down
+                new Point(x + 1, y - 1), //left-down
+                new Point(x, y - 1),     //left
+                new Point(x - 1, y - 1), //left-up
+                new Point(x - 1, y),     //up
+                new Point(x - 1, y + 1)  // right-up
         };
         State<Point> new_state;
 
-        for (Point p: points) {
+        for (Point p : points) {
             if (!isPointInMap(p))
                 continue;
             TILE tile = charToTile(map.get(p.getX())[p.getY()]);

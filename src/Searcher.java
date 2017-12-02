@@ -9,7 +9,7 @@ public abstract class Searcher<T> {
 
     public Searcher() {
         queue = new PriorityQueue<>(getComparator());
-        solution= null;
+        solution = null;
         totalCost = 0;
     }
 

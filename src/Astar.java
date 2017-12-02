@@ -2,10 +2,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * The A* search algorithms over a 2D map using points (X,Y), an ariel space estimation for the
+ * heuristic cost function and a limit to the number of iterations (no closed list).
+ */
 public class Astar extends Searcher<Point> {
-    private Comparator<State<Point>> comparator = null;
-    private Searchable<Point> problem;
+    private Comparator<State<Point>> comparator = null; //comparator for the priority queue
+    private Searchable<Point> problem; //The recent search problem
 
+    /**
+     * Searches the given problem and keep it's solution and total cost.
+     *
+     * @param problem         problem to search in
+     * @param limitIterations limits the number of iterations performed.
+     */
     @Override
     public void search(Searchable<Point> problem, int limitIterations) {
         this.problem = problem;
@@ -36,8 +46,10 @@ public class Astar extends Searcher<Point> {
         }
     }
 
-
-
+    /**
+     * @return the comparator for the priority queue, based on f(n)=g(n)+h(n) and the time of
+     * creation
+     */
     @Override
     protected Comparator<State<Point>> getComparator() {
         if (comparator == null)

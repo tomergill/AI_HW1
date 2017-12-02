@@ -1,5 +1,6 @@
 /**
  * Class of a general state in a Searchable problem, with cost.
+ *
  * @param <T> Type of state.
  */
 public class State<T> {
@@ -11,8 +12,9 @@ public class State<T> {
 
     /**
      * Constructor.
-     * @param state The state this object represents.
-     * @param cost g(n) where n is this state.
+     *
+     * @param state  The state this object represents.
+     * @param cost   g(n) where n is this state.
      * @param father The State we came from, can be null.
      */
     public State(T state, double cost, State<T> father, int depth, int creationTime) {
@@ -24,7 +26,7 @@ public class State<T> {
     }
 
     public State(T state, double cost, State<T> father, int creationTime) {
-        this(state, cost, father, father!= null ? father.depth + 1 : 0, creationTime);
+        this(state, cost, father, father != null ? father.depth + 1 : 0, creationTime);
     }
 
     public State(T state, double cost, int creationTime) {
@@ -41,6 +43,7 @@ public class State<T> {
 
     /**
      * Gets the state.
+     *
      * @return the state.
      */
     public T getState() {
@@ -49,6 +52,7 @@ public class State<T> {
 
     /**
      * Gets the cost.
+     *
      * @return Cost of getting to this state from the Start state.
      */
     public double getCost() {
@@ -61,6 +65,7 @@ public class State<T> {
 
     /**
      * Gets the father state.
+     *
      * @return the state we came from, or null if there isn't one.
      */
     public State<T> getCameFrom() {
@@ -70,11 +75,11 @@ public class State<T> {
     /**
      * Possibly adds a new state we came from, by checking whether it's new cost is less than the
      * one before.
+     *
      * @param father The new state we came from.
      * @return true if father is now this.cameFrom, false otherwise.
      */
-    public boolean newCameFrom(State<T> father, int creationTime)
-    {
+    public boolean newCameFrom(State<T> father, int creationTime) {
         if (equals(father) || father.getCost() >= cameFrom.cost)
             return false;
         this.cost += father.cost - cameFrom.cost;
@@ -95,6 +100,7 @@ public class State<T> {
 
     /**
      * Checks if object is equal to this state.
+     *
      * @param o Object to check.
      * @return True if equals, false otherwise.
      */
