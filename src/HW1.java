@@ -25,12 +25,12 @@ public class HW1 {
                     break;
             }
 
-            /*
+
             System.out.println("The map is:\n \t01234");
             for (int i = 0; i < reader.getMap().size(); i++) {
                 System.out.println(i + "\t" + new String(reader.getMap().get(i)));
             }
-            System.out.println();
+            System.out.println(); /*
             System.out.println("Start is " + problem.getStart());
             System.out.println("Goal is " + problem.getGoal());
             System.out.println();
@@ -40,7 +40,8 @@ public class HW1 {
             }
             */
 
-            algo.search(problem);
+            /* searching, limited to number of nodes in map */
+            algo.search(problem, reader.getRows() * reader.getCols() + 1);
             FileWriter writer = new FileWriter("output.txt");
             if (algo.foundSolution()) {
                 String route = getRouteFromSolutionStack(algo.getSolution());
@@ -89,7 +90,7 @@ public class HW1 {
                         case -1:
                             builder.append('L');
                             break;
-                        case '1':
+                        case 1:
                             builder.append('R');
                             break;
                         default:
@@ -115,7 +116,9 @@ public class HW1 {
                     return null;
             }
             prev = next;
+            builder.append("-");
         }
+        builder.deleteCharAt(builder.length() - 1);
         return builder.toString();
     }
 

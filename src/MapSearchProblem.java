@@ -83,7 +83,7 @@ public class MapSearchProblem extends Searchable<Point> {
                 new Point(x+1, y),      // down
                 new Point(x+1, y-1), //left-down
                 new Point(x, y-1),     //left
-                new Point(x-1, y+1), //left-up
+                new Point(x-1, y-1), //left-up
                 new Point(x-1, y),     //up
                 new Point(x-1, y+1)  // right-up
         };
@@ -95,6 +95,9 @@ public class MapSearchProblem extends Searchable<Point> {
             TILE tile = charToTile(map.get(p.getX())[p.getY()]);
             if (tile == TILE.WATER || state.getState().equals(p)
                     || (state.getCameFrom() != null && state.getCameFrom().getState().equals(p)))
+                continue;
+            if (p.getX() != x && p.getY() != y  //corner
+                    && (map.get(x)[p.getY()] == 'W' || map.get(p.getX())[y] == 'W'))
                 continue;
             list.add(new State<Point>(p, state.getCost() + costsPerTile.get(tile), state,
                     state.getDepth() + 1, timeOfCreation));

@@ -13,7 +13,7 @@ public abstract class Searcher<T> {
         totalCost = 0;
     }
 
-    public abstract void search(Searchable<Point> problem);
+    public abstract void search(Searchable<Point> problem, int limitIterations);
 
     public Stack<T> getSolution() {
         return solution;
