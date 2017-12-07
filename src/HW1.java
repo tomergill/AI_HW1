@@ -6,7 +6,14 @@ import java.util.Stack;
 public class HW1 {
     public static void main(String[] args) {
 
-        assert args.length == 1;
+        String file;
+        if (args.length == 1)
+            file = args[0];
+        else if (args.length == 0)
+            file = "input.txt";
+        else
+            System.err.println("Too many argumants, expected 0 or 1 only.");
+            System.exit(1);
         try {
             System.out.println("File is " + args[0] + "\n");
             MapReader reader = new MapReader(args[0]);
