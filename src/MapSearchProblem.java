@@ -24,13 +24,13 @@ public class MapSearchProblem extends Searchable<Point> {
         ROAD,
         DIRT,
         HILL,
-        WATER;
+        WATER
     }
 
     private static final Map<TILE, Double> costsPerTile;
 
     static {
-        costsPerTile = new EnumMap<TILE, Double>(TILE.class);
+        costsPerTile = new EnumMap<>(TILE.class);
         costsPerTile.put(TILE.START, 0.0);
         costsPerTile.put(TILE.END, 0.0);
         costsPerTile.put(TILE.ROAD, 1.0);
@@ -78,7 +78,7 @@ public class MapSearchProblem extends Searchable<Point> {
                 int x2 = goal.getState().getX(), y2 = goal.getState().getY();
 //                estimation[i][j] = sqrt(((double) i - x2) * ((double) i - x2)
 //                        + ((double) j - y2) * ((double) j - y2));
-                estimation[i][j] = max(abs(i - x2), abs(j - x2));
+                estimation[i][j] = max(abs(i - x2), abs(j - y2));
             }
         }
     }
@@ -143,7 +143,6 @@ public class MapSearchProblem extends Searchable<Point> {
                 new Point(x - 1, y),     //up
                 new Point(x - 1, y + 1)  // right-up
         };
-        State<Point> new_state;
 
         for (Point p : points) {
             if (isPointNotInMap(p))
@@ -155,7 +154,7 @@ public class MapSearchProblem extends Searchable<Point> {
             if (p.getX() != x && p.getY() != y  //corner
                     && (map.get(x)[p.getY()] == 'W' || map.get(p.getX())[y] == 'W'))
                 continue;
-            list.add(new State<Point>(p, state.getCost() + costsPerTile.get(tile), state,
+            list.add(new State<>(p, state.getCost() + costsPerTile.get(tile), state,
                     state.getDepth() + 1, timeOfCreation));
         }
 

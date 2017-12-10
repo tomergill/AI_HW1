@@ -8,15 +8,15 @@ import java.util.List;
  * Class for reading a file to get the used Algorithm, the size of the map and the whole map.
  */
 public class MapReader {
-    private List<char[]> map = null;
-    private String algo = null;
-    private int rows = -1, cols = -1;
+    private List<char[]> map;
+    private String algo;
+    private int rows, cols;
 
     /**
      * Ctor. reads the file and initializes this' members
      *
      * @param path Path to file
-     * @throws IOException
+     * @throws IOException from reading file
      */
     public MapReader(String path) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(path));

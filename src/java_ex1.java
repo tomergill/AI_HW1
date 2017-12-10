@@ -1,6 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+//import java.util.List;
 import java.util.Stack;
 
 /***
@@ -143,21 +143,21 @@ public class java_ex1 {
         return builder.toString();
     }
 
-    /**
-     * Debug Method. Ignore.
-     *
-     * @param problem
-     * @param state
-     * @return
-     */
-    private static List<State<Point>> printStateAndChildren(MapSearchProblem problem, State<Point>
-            state) {
-        System.out.println("States from state " + state + " are: ");
-        List<State<Point>> children = problem.getChildStates(state, 0);
-        for (State<Point> s : children) {
-            System.out.println("*\t" + s);
-        }
-        System.out.println();
-        return children;
-    }
+//    /**
+//     * Debug Method. Ignore.
+//     *
+//     * @param problem
+//     * @param state
+//     * @return
+//     */
+//    private static List<State<Point>> printStateAndChildren(MapSearchProblem problem, State<Point>
+//            state) {
+//        System.out.println("States from state " + state + " are: ");
+//        List<State<Point>> children = problem.getChildStates(state, 0);
+//        for (State<Point> s : children) {
+//            System.out.println("*\t" + s);
+//        }
+//        System.out.println();
+//        return children;
+//    }
 }
