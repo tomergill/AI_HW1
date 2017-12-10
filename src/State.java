@@ -13,9 +13,11 @@ public class State<T> {
     /**
      * Constructor.
      *
-     * @param state  The state this object represents.
-     * @param cost   g(n) where n is this state.
-     * @param father The State we came from, can be null.
+     * @param state        The state this object represents.
+     * @param cost         g(n) where n is this state.
+     * @param father       The State we came from, can be null.
+     * @param creationTime The time this state was created.
+     * @param depth        The deopth of this state down the current path
      */
     public State(T state, double cost, State<T> father, int depth, int creationTime) {
         this.state = state;
@@ -25,18 +27,44 @@ public class State<T> {
         this.creationTime = creationTime;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param state        The state this object represents.
+     * @param cost         g(n) where n is this state.
+     * @param father       The State we came from, can be null.
+     * @param creationTime The time this state was created.
+     */
     public State(T state, double cost, State<T> father, int creationTime) {
         this(state, cost, father, father != null ? father.depth + 1 : 0, creationTime);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param state        The state this object represents.
+     * @param cost         g(n) where n is this state.
+     * @param creationTime The time this state was created.]
+     */
     public State(T state, double cost, int creationTime) {
         this(state, cost, null, creationTime);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param state        The state this object represents.
+     * @param cost         g(n) where n is this state.
+     * @param creationTime The time this state was created.
+     * @param depth        The deopth of this state down the current path
+     */
     public State(T state, double cost, int depth, int creationTime) {
         this(state, cost, null, depth, creationTime);
     }
 
+    /**
+     * @return The time this state was created.
+     */
     public int getCreationTime() {
         return creationTime;
     }
@@ -58,10 +86,6 @@ public class State<T> {
     public double getCost() {
         return cost;
     }
-
-//    public void setCost(double cost) {
-//        this.cost = cost;
-//    }
 
     /**
      * Gets the father state.
@@ -90,10 +114,18 @@ public class State<T> {
 
     }
 
+    /**
+     * Sets the creation time of this state.
+     *
+     * @param creationTime New creation time.
+     */
     public void setCreationTime(int creationTime) {
         this.creationTime = creationTime;
     }
 
+    /**
+     * @return The depth of this state in it's path.
+     */
     public int getDepth() {
         return depth;
     }

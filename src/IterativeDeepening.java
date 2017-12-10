@@ -1,8 +1,18 @@
 import java.util.*;
 
+/**
+ * Class for the Iterative Deepening for DFS (IDS) search algorithm.
+ * The stack is replaced with a priority queue instead.
+ */
 public class IterativeDeepening extends Searcher<Point> {
     private Comparator<State<Point>> comparator = null;
 
+    /**
+     * Searches the problem using IDS.
+     *
+     * @param problem         Problem to search in.
+     * @param limitIterations Can limit the depth / iterations of the algorithm. If < 0 there is
+     */
     @Override
     public void search(Searchable<Point> problem, int limitIterations) {
         if (limitIterations < 0)
@@ -27,6 +37,13 @@ public class IterativeDeepening extends Searcher<Point> {
         }
     }
 
+    /**
+     * Searches a DFS search in problem up to depth of limit.
+     *
+     * @param problem Problem to search in.
+     * @param limit   Limit of depth.
+     * @return The goal state if found, otherwise null.
+     */
     private State<Point> DFSWithDepthLimit(Searchable<Point> problem, int limit) {
         /* Initialization */
         int time = 0;
@@ -43,7 +60,8 @@ public class IterativeDeepening extends Searcher<Point> {
             Collections.reverse(children);
             for (State<Point> s : children) {
                 s.setCreationTime(time++);
-                queue.add(s);
+                if (!queue.contains(s))
+                    queue.add(s);
             }
         }
 
@@ -53,6 +71,9 @@ public class IterativeDeepening extends Searcher<Point> {
         return null; //there is no solution
     }
 
+    /**
+     * @return Comparator for the priority queue, that always takes the newer state.
+     */
     @Override
     protected Comparator<State<Point>> getComparator() {
         if (comparator == null) {

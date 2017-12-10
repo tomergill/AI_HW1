@@ -3,13 +3,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
+/**
+ * Class representing a search problem over a map represented by a list of char arrays (char
+ * matrix), managing a cost, estimation and possible children for each state, including start and
+ * goal states.
+ * The estimation is defined to be the direct airspace (max{|x - goal.x|, |y - goal.y|})
+ */
 public class MapSearchProblem extends Searchable<Point> {
     private List<char[]> map;
     private double[][] estimation;
 
+    /**
+     * Kinds of tiles in the map.
+     */
     public enum TILE {
         START,
         END,
@@ -31,6 +39,11 @@ public class MapSearchProblem extends Searchable<Point> {
         costsPerTile.put(TILE.WATER, null);
     }
 
+    /**
+     * Ctor. Initializes the start and goal states, and also computes the estimation for each point.
+     *
+     * @param map The char "matrix" that is the map
+     */
     public MapSearchProblem(List<char[]> map) {
         assert map != null;
         this.map = map;
@@ -62,14 +75,19 @@ public class MapSearchProblem extends Searchable<Point> {
         for (int i = 0; i < estimation.length; i++) {
             for (int j = 0; j < estimation[0].length; j++) {
                 /* Airspace */
-                double x2 = goal.getState().getX(), y2 = goal.getState().getY();
-                estimation[i][j] = sqrt(((double) i - x2) * ((double) i - x2)
-                        + ((double) j - y2) * ((double) j - y2));
+                int x2 = goal.getState().getX(), y2 = goal.getState().getY();
+//                estimation[i][j] = sqrt(((double) i - x2) * ((double) i - x2)
+//                        + ((double) j - y2) * ((double) j - y2));
+                estimation[i][j] = max(abs(i - x2), abs(j - x2));
             }
         }
     }
 
-    private TILE charToTile(char c) {
+    /**
+     * @param c char to convert
+     * @return Converts the char from the map to the appropriate enum tile.
+     */
+    private static TILE charToTile(char c) {
         switch (c) {
             case 'S':
                 return TILE.START;
@@ -88,12 +106,27 @@ public class MapSearchProblem extends Searchable<Point> {
         }
     }
 
-    private boolean isPointInMap(Point p) {
-        return p != null
-                && p.getX() >= 0 && p.getX() < map.size()
-                && p.getY() >= 0 && p.getY() < map.get(0).length;
+    /**
+     * Checks whether a point is in the map's boundaries
+     *
+     * @param p Point to check
+     * @return true if p is in the map, otherwise false
+     */
+    private boolean isPointNotInMap(Point p) {
+        return p == null
+                || p.getX() < 0 || p.getX() >= map.size()
+                || p.getY() < 0 || p.getY() >= map.get(0).length;
     }
 
+    /**
+     * Gets a list of all the states that can be rached from state, in an clockwise order
+     * starting in right direction. The function creates all the new states and gives them the
+     * time of creation, and state as father.
+     *
+     * @param state          The father state.
+     * @param timeOfCreation The time given to all the newly created states.
+     * @return A list of all the children states from state.
+     */
     @Override
     public List<State<Point>> getChildStates(State<Point> state, int timeOfCreation) {
         if (state == null)
@@ -113,7 +146,7 @@ public class MapSearchProblem extends Searchable<Point> {
         State<Point> new_state;
 
         for (Point p : points) {
-            if (!isPointInMap(p))
+            if (isPointNotInMap(p))
                 continue;
             TILE tile = charToTile(map.get(p.getX())[p.getY()]);
             if (tile == TILE.WATER || state.getState().equals(p)
@@ -129,9 +162,13 @@ public class MapSearchProblem extends Searchable<Point> {
         return list;
     }
 
+    /**
+     * @param state State to estimate
+     * @return An estimation for the given state
+     */
     @Override
     public double getEstimationForState(State<Point> state) {
-        if (!isPointInMap(state.getState()))
+        if (isPointNotInMap(state.getState()))
             return -1;
         return estimation[state.getState().getX()][state.getState().getY()];
     }

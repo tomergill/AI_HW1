@@ -3,22 +3,33 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Stack;
 
-public class HW1 {
+/***
+ * Main class. Reads input.txt (or other file), and then runs the requested algorithm (in the
+ * file) on the map from the file. Then writes the path and it's cost to "output.txt" file.
+ */
+public class java_ex1 {
+    /***
+     * Main method of program. If args isn't another file, the input will be taken from "input.txt"
+     * @param args can contain name of input file, other wise empty.
+     */
     public static void main(String[] args) {
+        String file = "input.txt";
 
-        String file;
-        if (args.length == 1)
+        if (args.length == 1) {
             file = args[0];
-        else if (args.length == 0)
-            file = "input.txt";
-        else
-            System.err.println("Too many argumants, expected 0 or 1 only.");
+        } else if (args.length > 1) {
+            System.out.println("Too many argumants, expected 0 or 1 only.");
             System.exit(1);
+        }
+
         try {
-            System.out.println("File is " + args[0] + "\n");
-            MapReader reader = new MapReader(args[0]);
+            System.out.println("File is " + file + "\n");
+
+            // read file & create problem class
+            MapReader reader = new MapReader(file);
             MapSearchProblem problem = new MapSearchProblem(reader.getMap());
 
+            // get the Algo from the file
             Searcher<Point> algo;
             switch (reader.getAlgo()) {
                 case "IDS":
@@ -37,28 +48,24 @@ public class HW1 {
             for (int i = 0; i < reader.getMap().size(); i++) {
                 System.out.println(i + "\t" + new String(reader.getMap().get(i)));
             }
-            System.out.println(); /*
-            System.out.println("Start is " + problem.getStart());
-            System.out.println("Goal is " + problem.getGoal());
             System.out.println();
-            List<State<Point>> children = printStateAndChildren(problem, problem.start);
-            for (int i = 0; i < 4; i++) {
-                children = printStateAndChildren(problem, children.get(2));
-            }
-            */
 
             /* searching, limited to number of nodes in map */
             algo.search(problem, reader.getRows() * reader.getCols() + 1);
             FileWriter writer = new FileWriter("output.txt");
+
+            // if found a solution write the path to the file and it's cost
             if (algo.foundSolution()) {
                 String route = getRouteFromSolutionStack(algo.getSolution());
                 if (route != null) {
-                    writer.write(route + " " + algo.getTotalCost());
+                    writer.write(route + " " + (int) algo.getTotalCost());
                     System.out.println(route + " " + algo.getTotalCost()); //todo remove
                     writer.close();
                     return;
                 }
             }
+
+            // no solution found
             writer.write("no path");
             System.out.println("no path"); //todo remove
             writer.close();
@@ -69,6 +76,13 @@ public class HW1 {
         }
     }
 
+    /**
+     * Creates a description of the path, where R is right, L is Left, U is up and D is down and
+     * RD, LD, RU and LU are also possible. Each direction is separated with '-'.
+     *
+     * @param solution Stack of points from start to finish.
+     * @return String representing the path
+     */
     private static String getRouteFromSolutionStack(Stack<Point> solution) {
         if (solution == null) return null;
         Point prev = solution.pop(), next;
@@ -129,6 +143,13 @@ public class HW1 {
         return builder.toString();
     }
 
+    /**
+     * Debug Method. Ignore.
+     *
+     * @param problem
+     * @param state
+     * @return
+     */
     private static List<State<Point>> printStateAndChildren(MapSearchProblem problem, State<Point>
             state) {
         System.out.println("States from state " + state + " are: ");
